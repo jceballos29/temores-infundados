@@ -17,7 +17,7 @@ function App() {
 	
 
 	return (
-		<div className='w-full h-full relative p-5'>
+		<div className='w-full h-full relative overflow-hidden p-5'>
 			<Header />
 			<div className='w-full pt-10 space-y-1'>
 				{playlist.map((item) => (

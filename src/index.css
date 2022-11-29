@@ -17,4 +17,14 @@ body {
 		/*stuff here*/
 		@apply bg-[#0F4139] border-none h-3 w-3
 	}
+
+	input[type='range']::-ms-thumb {
+		/*stuff here*/
+		@apply bg-[#0F4139] border-none h-3 w-3
+	}
+
+	input[type='range']::-webkit-slider-thumb {
+		/*stuff here*/
+		@apply bg-[#0F4139] border-none h-3 w-3
+	}
 }
