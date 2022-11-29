@@ -1,6 +1,7 @@
 /** @format */
 
 import React from 'react';
+import { useRef } from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import {
@@ -24,19 +25,82 @@ const AudioPlayer = () => {
 		(state) => state.audioPlayer,
 	);
 	const dispatch = useDispatch();
+	const [audioProgress, setAudioProgess] = useState(0);
+
 	const [currentProgress, setCurrentProgress] = useState(0);
 	const trackProgressStyling = `linear-gradient(to right, #0F4139 ${currentProgress}%, #F9D2C288 ${currentProgress}%)`;
 
+	const formatSecondsAsTime = (secs, format) => {
+		var hr = Math.floor(secs / 3600);
+		var min = Math.floor((secs - hr * 3600) / 60);
+		var sec = Math.floor(secs - hr * 3600 - min * 60);
+
+		if (min < 10) {
+			min = '0' + min;
+		}
+		if (sec < 10) {
+			sec = '0' + sec;
+		}
+
+		return min + ':' + sec;
+	};
+
+	const audioRef = useRef(new Audio(currentAudio?.audioFile));
+	const intervalRef = useRef();
+
+	const startTimer = () => {
+		// Clear any timers already running
+		clearInterval(intervalRef.current);
+
+		intervalRef.current = setInterval(() => {
+			if (audioRef.current.ended) {
+				nextAudio();
+			} else {
+				setAudioProgess(audioRef.current.currentTime);
+			}
+		}, [1000]);
+	};
+
+	const onScrub = (value) => {
+		// Clear any timers already running
+		clearInterval(intervalRef.current);
+		audioRef.current.currentTime = value;
+		setAudioProgess(audioRef.current.currentTime);
+	};
+
 	const nextAudio = () => {
-		const next = playlist.find( audio => audio.id === currentAudio.next)
-		dispatch(setCurrentAudio(next))
-	}
+		const next = playlist.find(
+			(audio) => audio.id === currentAudio.next,
+		);
+		dispatch(setCurrentAudio(next));
+	};
 
 	const prevAudio = () => {
-		const prev = playlist.find( audio => audio.id === currentAudio.prev)
-		dispatch(setCurrentAudio(prev))
-	}
-	
+		const prev = playlist.find(
+			(audio) => audio.id === currentAudio.prev,
+		);
+		dispatch(setCurrentAudio(prev));
+	};
+
+	useEffect(() => {
+		if (currentAudio) {
+			audioRef.current.pause();
+			audioRef.current = new Audio(currentAudio?.audioFile);
+			audioRef.current.play();
+			startTimer();
+		}
+	}, [currentAudio]);
+
+	useEffect(() => {
+		if (isPlaying) {
+			audioRef.current.play();
+			startTimer();
+		} else {
+			audioRef.current.pause();
+			clearInterval(intervalRef.current);
+		}
+	}, [isPlaying]);
+
 	return (
 		<div
 			className={`fixed top-0 left-0 w-screen h-screen z-20 bg-[#E39667]/50 backdrop-blur-md transform transition-transform duration-200 ${
@@ -64,30 +128,36 @@ const AudioPlayer = () => {
 				</figure>
 				<div className='w-full'>
 					<div>
-						<h3 className='font-bold text-xl'>{currentAudio?.title}</h3>
-						<p className='font-light leading-none'>{currentAudio?.subtitle}</p>
+						<h3 className='font-bold text-xl'>
+							{currentAudio?.title}
+						</h3>
+						<p className='font-light leading-none'>
+							{currentAudio?.subtitle}
+						</p>
 					</div>
 					<div className='w-full mt-4'>
 						<input
 							type='range'
 							name='track-progress'
 							id='tract-progress'
-							min={0}
-							step={1}
-							max={100}
-							value={currentProgress}
-							onChange={(e) => setCurrentProgress(e.target.value)}
-							className='w-full appearance-none h-1 rounded-full'
+							min={'0'}
+							step={'1'}
+							max={audioRef.current?.duration || '0'}
+							value={audioRef.current?.currentTime || '0'}
+							onChange={(e) => {
+								onScrub(e.target.value);
+							}}
+							className='w-full appearance-none  h-1 rounded-full'
 							style={{ background: trackProgressStyling }}
 						/>
 						<div className='w-full flex items-center justify-between text-xs font-light italic'>
-							<span>1:00</span>
-							<span>4:25</span>
+							<span className='flex w-10'>
+								{audioRef.current?.currentTime ? formatSecondsAsTime(audioRef.current.currentTime) : '00:00'}
+							</span>
+							<span  className='flex w-10'>{formatSecondsAsTime(audioRef.current.duration - audioRef.current?.currentTime)}</span>
 						</div>
 						<div className='w-full flex items-center justify-center space-x-4 mt-2'>
-							<button
-								onClick={() => prevAudio()}
-							>
+							<button onClick={() => prevAudio()}>
 								<RiSkipBackFill size={32} />
 							</button>
 							{isPlaying && (
@@ -106,9 +176,7 @@ const AudioPlayer = () => {
 									<RiPlayFill size={32} />
 								</button>
 							)}
-							<button
-								onClick={() => nextAudio()}
-							>
+							<button onClick={() => nextAudio()}>
 								<RiSkipForwardFill size={32} />
 							</button>
 						</div>
