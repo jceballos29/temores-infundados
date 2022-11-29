@@ -26,10 +26,7 @@ const AudioPlayer = () => {
 	);
 	const dispatch = useDispatch();
 	const [audioProgress, setAudioProgess] = useState(0);
-
-	const [currentProgress, setCurrentProgress] = useState(0);
-	const trackProgressStyling = `linear-gradient(to right, #0F4139 ${currentProgress}%, #F9D2C288 ${currentProgress}%)`;
-
+	
 	const formatSecondsAsTime = (secs, format) => {
 		var hr = Math.floor(secs / 3600);
 		var min = Math.floor((secs - hr * 3600) / 60);
@@ -62,12 +59,10 @@ const AudioPlayer = () => {
 	};
 
 	const onScrub = (value) => {
-		// Clear any timers already running
-		clearInterval(intervalRef.current);
 		audioRef.current.currentTime = value;
 		setAudioProgess(audioRef.current.currentTime);
 	};
-
+	
 	const nextAudio = () => {
 		const next = playlist.find(
 			(audio) => audio.id === currentAudio.next,
@@ -78,10 +73,10 @@ const AudioPlayer = () => {
 	const prevAudio = () => {
 		const prev = playlist.find(
 			(audio) => audio.id === currentAudio.prev,
-		);
-		dispatch(setCurrentAudio(prev));
+			);
+			dispatch(setCurrentAudio(prev));
 	};
-
+	
 	useEffect(() => {
 		if (currentAudio) {
 			audioRef.current.pause();
@@ -100,7 +95,9 @@ const AudioPlayer = () => {
 			clearInterval(intervalRef.current);
 		}
 	}, [isPlaying]);
-
+	
+	const trackProgressStyling = `linear-gradient(to right, #0F4139 ${(audioProgress / audioRef.current.duration) * 100}%, #F9D2C288 ${(audioProgress / audioRef.current.duration) * 100}%)`;
+	
 	return (
 		<div
 			className={`fixed top-0 left-0 w-screen h-screen z-20 bg-[#E39667]/50 backdrop-blur-md transform transition-transform duration-200 ${
@@ -152,9 +149,9 @@ const AudioPlayer = () => {
 						/>
 						<div className='w-full flex items-center justify-between text-xs font-light italic'>
 							<span className='flex w-10'>
-								{audioRef.current?.currentTime ? formatSecondsAsTime(audioRef.current.currentTime) : '00:00'}
+								{audioProgress ? formatSecondsAsTime(audioProgress) : '00:00'}
 							</span>
-							<span  className='flex w-10'>{formatSecondsAsTime(audioRef.current.duration - audioRef.current?.currentTime)}</span>
+							<span  className='flex w-10'>{audioRef.current.duration ? formatSecondsAsTime(audioRef.current.duration - audioProgress) : '00:00'}</span>
 						</div>
 						<div className='w-full flex items-center justify-center space-x-4 mt-2'>
 							<button onClick={() => prevAudio()}>

@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { AudioPlayer, Footer, Header } from './components';
-import { setCurrentAudio } from './redux/features/audioPlayer';
+import { playAudio, setCurrentAudio } from './redux/features/audioPlayer';
 import { playlist } from './utils/playlist';
 
 function App() {
@@ -23,7 +23,10 @@ function App() {
 				{playlist.map((item) => (
 					<div
 						key={item.id}
-						onClick={() => dispatch(setCurrentAudio(item))}
+						onClick={() => {
+							dispatch(setCurrentAudio(item))
+							dispatch(playAudio())
+						}}
 						className='w-ful h-16 bg-[#E39667] rounded-md flex p-2 hover:bg-[#E39667]/50'
 					>
 						<figure className='h-full aspect-square bg-[#F9D2C2] rounded mr-2 overflow-hidden'>
