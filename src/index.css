@@ -6,8 +6,15 @@
 @tailwind components;
 @tailwind utilities;
 
-
 body {
 	background-color: #f9d2c2;
 	font-family: 'Outfit', sans-serif;
+	min-height: 100vh;
+}
+
+@layer components {
+	input[type='range']::-moz-range-thumb {
+		/*stuff here*/
+		@apply bg-[#0F4139] border-none h-3 w-3
+	}
 }
