@@ -1,0 +1,13 @@
+
+.socila-networks {
+ 
+  gap: 10px;
+}
+
+.socila-networks li {
+  list-style: none;
+}
+
+.socila-networks li > a {
+  color: #000;
+}
