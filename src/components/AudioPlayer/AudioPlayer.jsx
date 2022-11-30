@@ -115,7 +115,7 @@ const AudioPlayer = () => {
 					<RiArrowDownSLine size={32} />
 				</span>
 			</header>
-			<div className='w-full h-[calc(100vh-44px)] px-6 flex flex-col justify-evenly'>
+			<div className='w-full h-[calc(100vh-44px)] px-5 flex flex-col justify-evenly'>
 				<figure className='w-full aspect-square bg-[#F9D2C2] rounded-md shadow-md overflow-hidden'>
 					<img
 						src={currentAudio?.image}
@@ -125,10 +125,10 @@ const AudioPlayer = () => {
 				</figure>
 				<div className='w-full'>
 					<div>
-						<h3 className='font-bold text-xl'>
+						<h3 className='font-bold text-lg'>
 							{currentAudio?.title}
 						</h3>
-						<p className='font-light leading-none'>
+						<p className='font-light text-sm leading-none'>
 							{currentAudio?.subtitle}
 						</p>
 					</div>

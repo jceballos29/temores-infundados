@@ -26,8 +26,8 @@ const MiniPlayer = () => {
 						<img src={currentAudio?.image} alt={currentAudio?.title} className='w-full h-full object-cover' />
 					</figure>
 					<div>
-						<h4 className='font-bold'>{currentAudio?.title}</h4>
-						<p className='text-sm leading-none'>{currentAudio?.subtitle}</p>
+						<h4 className='font-bold text-sm text-ellipsis'>{currentAudio?.title}</h4>
+						<p className='text-xs leading-none'>{currentAudio?.subtitle}</p>
 					</div>
 				</div>
 				{isPlaying && (
