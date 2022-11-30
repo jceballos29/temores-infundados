@@ -11,6 +11,7 @@ import { playlist } from './utils/playlist';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
 import gallery from './utils/gallery';
+import temoresInfundados from './assets/img/temores-infundados.png'
 
 function App() {
 	const dispatch = useDispatch();
@@ -31,8 +32,9 @@ function App() {
 					<Route
 						path='/'
 						element={
-							<div className='w-full h-full p-5'>
+							<div className='w-full h-full flex flex-col justify-between p-5'>
 								<Header />
+								<img src={temoresInfundados} alt="" />
 							</div>
 						}
 					/>
@@ -53,7 +55,7 @@ function App() {
 											{gallery.map((item) => (
 												<img
 													key={item.id}
-													src={item.image}
+													src={`https://firebasestorage.googleapis.com/v0/b/temores-infundados-78e41.appspot.com/o/gallery%2F${item.title}.jpg?alt=media`}
 													className='block w-full rounded cursor-pointer'
 													alt={item.title}
 													onClick={() => viewImage(item)}
