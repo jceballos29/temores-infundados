@@ -55,7 +55,7 @@ function App() {
 											{gallery.map((item) => (
 												<img
 													key={item.id}
-													src={`https://firebasestorage.googleapis.com/v0/b/temores-infundados-78e41.appspot.com/o/gallery%2F${item.title}.jpg?alt=media`}
+													src={`https://storage.googleapis.com/temores-infundados/gallery/${item.title}.jpg`}
 													className='block w-full rounded cursor-pointer'
 													alt={item.title}
 													onClick={() => viewImage(item)}
