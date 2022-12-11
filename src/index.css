@@ -10,6 +10,10 @@ body {
 	background-color: #f9d2c2;
 	font-family: 'Outfit', sans-serif;
 	min-height: 100vh;
+	background-image: url('./assets/img/background.png');
+	background-repeat: no-repeat;
+	background-size: cover;
+	
 }
 
 @layer components {

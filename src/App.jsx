@@ -31,14 +31,14 @@ function App() {
 
 	return (
 		<BrowserRouter>
-			<div className='w-full h-screen relative pb-28 overflow-hidden'>
+			<div className='w-full h-screen relative pb-32 overflow-hidden'>
 				<Routes>
 					<Route
 						path='/'
 						element={
 							<div className='w-full h-full flex flex-col justify-between p-5'>
 								<Header />
-								<img src={temoresInfundados} alt='' />
+								<img src={temoresInfundados} alt='' className='w-full' />
 							</div>
 						}
 					/>
@@ -85,7 +85,7 @@ function App() {
 						element={
 							<div className='w-full h-full p-2 overflow-y-auto'>
 								<h2 className='text-3xl font-bold'>Podcast</h2>
-								<div className='pt-5 space-y-1'>
+								<div className='pt-5  space-y-1'>
 									{playlist.map((item) => (
 										<div
 											key={item.id}
